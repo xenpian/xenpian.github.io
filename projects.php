@@ -14,15 +14,15 @@
   <header>
     <div class="container header-container">
       <div class="logo-wrap">
-        <a href="index.html" class="logo">
+        <a href="./" class="logo">
           <i class="fa-brands fa-github-alt"></i> xallways
         </a>
       </div>
       
       <nav id="nav-menu">
-        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-        <a href="projects.html" class="nav-link active"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
-        <a href="about.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
+        <a href="./" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href="projects" class="nav-link active"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
+        <a href="about" class="nav-link"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
       </nav>
 
       <div class="header-actions">
@@ -30,7 +30,7 @@
           <img src="https://github.com/xenpian.png" alt="xenpian" class="profile-avatar" id="profile-avatar-btn">
           <div class="profile-dropdown" id="profile-dropdown-menu">
             <a href="https://github.com/xenpian" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
-            <a href="projects.html"><i class="fa-solid fa-code"></i> Repositories</a>
+            <a href="projects"><i class="fa-solid fa-code"></i> Repositories</a>
           </div>
         </div>
         <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">

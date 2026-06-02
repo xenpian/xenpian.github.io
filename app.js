@@ -167,7 +167,10 @@ function initActiveNavLink() {
   document.querySelectorAll(".nav-link").forEach(link => {
     link.classList.remove("active");
     const href = link.getAttribute("href");
-    if (page === href || (page === "" && href === "index.html")) {
+    if (
+      page === href || 
+      (href === "./" && (page === "" || page === "index.php" || page === "index.html"))
+    ) {
       link.classList.add("active");
     }
   });

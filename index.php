@@ -16,15 +16,15 @@
   <header>
     <div class="container header-container">
       <div class="logo-wrap">
-        <a href="index.html" class="logo">
+        <a href="./" class="logo">
           <i class="fa-brands fa-github-alt"></i> xallways
         </a>
       </div>
 
       <nav id="nav-menu">
-        <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> <span>Home</span></a>
-        <a href="projects.html" class="nav-link"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
-        <a href="about.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
+        <a href="./" class="nav-link active"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href="projects" class="nav-link"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
+        <a href="about" class="nav-link"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
       </nav>
 
       <div class="header-actions">
@@ -32,7 +32,7 @@
           <img src="https://github.com/xenpian.png" alt="xenpian" class="profile-avatar" id="profile-avatar-btn">
           <div class="profile-dropdown" id="profile-dropdown-menu">
             <a href="https://github.com/xenpian" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
-            <a href="projects.html"><i class="fa-solid fa-code"></i> Repositories</a>
+            <a href="projects"><i class="fa-solid fa-code"></i> Repositories</a>
           </div>
         </div>
         <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
@@ -65,7 +65,7 @@
         libraries and system tools for developers.
       </p>
       <div style="display: flex; gap: 8px; justify-content: center;">
-        <a href="projects.html" class="btn btn-primary">Explore Projects</a>
+        <a href="projects" class="btn btn-primary">Explore Projects</a>
       </div>
     </section>
 
@@ -103,7 +103,7 @@
     <section style="margin-top: 40px;">
       <div class="recent-projects-header">
         <h2 style="font-size: 16px; font-weight: 600;">Featured Projects</h2>
-        <a href="projects.html" style="font-size: 12px; color: #58a6ff;">View All</a>
+        <a href="projects" style="font-size: 12px; color: #58a6ff;">View All</a>
       </div>
 
       <!-- Limit projects list to 2 for homepage preview -->
