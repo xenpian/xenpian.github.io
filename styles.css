@@ -1154,7 +1154,7 @@ footer {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  width: 150px;
+  width: 180px;
   padding: 6px 0;
   display: none;
   flex-direction: column;
@@ -1335,6 +1335,7 @@ footer {
 
 .ascii-art-gif {
   width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
   image-rendering: pixelated;
@@ -1344,13 +1345,13 @@ footer {
 
 @media (max-width: 768px) {
   .ascii-art-gif-wrap {
-    max-width: 350px;
+    max-width: 500px;
   }
 }
 
 @media (max-width: 480px) {
   .ascii-art-gif-wrap {
-    max-width: 260px;
+    max-width: 360px;
   }
 }
 
@@ -1418,4 +1419,59 @@ footer {
 
 .scroll-down-btn i {
   animation: bounce-chevron 2s infinite ease-in-out;
+}
+
+/* Custom Dropdown & Profile Switcher */
+.dropdown-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.profile-switch-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 2px 6px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-muted);
+}
+
+.profile-switch-option img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+}
+
+.profile-switch-option span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.profile-switch-option:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+.profile-switch-option.active {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.profile-switch-option.active img {
+  border-color: var(--accent);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 6px 0;
 }

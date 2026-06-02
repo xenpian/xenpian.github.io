@@ -26,6 +26,99 @@ const LANGUAGE_COLORS = {
   "Java": "#b07219"
 };
 
+// Get active profile username
+function getActiveProfile() {
+  return localStorage.getItem("active_profile") || "xenpian";
+}
+
+// Update UI elements based on active profile
+function updateProfileUI() {
+  const activeProfile = getActiveProfile();
+  
+  // Update navbar avatar
+  const profileAvatarBtn = document.getElementById("profile-avatar-btn");
+  if (profileAvatarBtn) {
+    profileAvatarBtn.src = `https://github.com/${activeProfile}.png`;
+    profileAvatarBtn.alt = activeProfile;
+  }
+  
+  // Update dropdown options active state
+  document.querySelectorAll(".profile-switch-option").forEach(option => {
+    if (option.dataset.profile === activeProfile) {
+      option.classList.add("active");
+    } else {
+      option.classList.remove("active");
+    }
+  });
+  
+  // Update GitHub link in dropdown
+  const githubLink = document.getElementById("dropdown-github-link");
+  if (githubLink) {
+    githubLink.href = `https://github.com/${activeProfile}`;
+  }
+  
+  // Toggle websites section on homepage
+  const websitesSection = document.getElementById("websites-section");
+  if (websitesSection) {
+    if (activeProfile === "xenpian") {
+      websitesSection.style.display = "";
+    } else {
+      websitesSection.style.display = "none";
+    }
+  }
+  
+  // Update home page logo gif
+  const logoImg = document.querySelector(".ascii-art-gif");
+  if (logoImg) {
+    if (activeProfile === "weezy-os") {
+      logoImg.src = "assets/weezylogo.gif";
+    } else if (activeProfile === "uncoff") {
+      logoImg.src = "assets/uncoff.gif";
+    } else {
+      logoImg.src = "assets/logo.gif";
+    }
+  }
+}
+
+// Setup profile switcher click listeners
+function setupProfileSwitcher() {
+  // Initialize UI immediately
+  updateProfileUI();
+  
+  document.querySelectorAll(".profile-switch-option").forEach(option => {
+    option.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const selectedProfile = option.dataset.profile;
+      const currentProfile = getActiveProfile();
+      
+      if (selectedProfile === currentProfile) return;
+      
+      localStorage.setItem("active_profile", selectedProfile);
+      updateProfileUI();
+      
+      // Close dropdown
+      const profileDropdownMenu = document.getElementById("profile-dropdown-menu");
+      if (profileDropdownMenu) {
+        profileDropdownMenu.classList.remove("active");
+      }
+      
+      // Re-initialize projects with cache & fetch new ones
+      initProjects();
+      if (projectsGrid) {
+        renderFilters();
+        renderProjects();
+      }
+      
+      // Fetch fresh repos
+      await fetchGitHubProjects();
+      if (projectsGrid) {
+        renderFilters();
+        renderProjects();
+      }
+    });
+  });
+}
+
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
   // Clear old cache once to force fetching of all language percentages (including NSIS 0.3%)
@@ -33,6 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("my_portfolio_projects");
     localStorage.setItem("portfolio_cache_v3", "true");
   }
+  
+  setupProfileSwitcher(); // Initialize profile switcher
   initProjects();
   initActiveNavLink();
   setupProfileDropdownListener();
@@ -48,8 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupProjectsPageListeners();
   }
   
-
-
   // Fetch updated repositories from GitHub in the background
   fetchGitHubProjects().then(() => {
     if (projectsGrid) {
@@ -61,11 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Seed data from projects-data.js or cache if local storage is empty
 function initProjects() {
-  const savedProjects = localStorage.getItem("my_portfolio_projects");
+  const activeProfile = getActiveProfile();
+  const savedProjects = localStorage.getItem(`portfolio_projects_${activeProfile}`);
   if (savedProjects) {
     projects = JSON.parse(savedProjects);
     projects.sort((a, b) => (b.stars || 0) - (a.stars || 0));
-  } else if (typeof INITIAL_PROJECTS !== "undefined") {
+  } else if (activeProfile === "xenpian" && typeof INITIAL_PROJECTS !== "undefined") {
     projects = [...INITIAL_PROJECTS];
   } else {
     projects = [];
@@ -73,14 +167,15 @@ function initProjects() {
 }
 
 async function fetchGitHubProjects() {
+  const activeProfile = getActiveProfile();
   try {
-    const response = await fetch("https://api.github.com/users/xenpian/repos?sort=updated");
+    const response = await fetch(`https://api.github.com/users/${activeProfile}/repos?sort=updated`);
     if (!response.ok) throw new Error("GitHub API error");
     const repos = await response.json();
     
     // Read the current cache from localStorage if it exists
     let cachedProjects = [];
-    const saved = localStorage.getItem("my_portfolio_projects");
+    const saved = localStorage.getItem(`portfolio_projects_${activeProfile}`);
     if (saved) {
       try {
         cachedProjects = JSON.parse(saved);
@@ -121,7 +216,7 @@ async function fetchGitHubProjects() {
     await Promise.all(mappedProjects.map(async (project) => {
       if (project.languages) return;
       try {
-        const langResponse = await fetch(`https://api.github.com/repos/xenpian/${project.title}/languages`);
+        const langResponse = await fetch(`https://api.github.com/repos/${activeProfile}/${project.title}/languages`);
         if (langResponse.ok) {
           const langData = await langResponse.json();
           const total = Object.values(langData).reduce((sum, val) => sum + val, 0);
@@ -156,7 +251,8 @@ async function fetchGitHubProjects() {
 }
 
 function saveProjectsToStorage() {
-  localStorage.setItem("my_portfolio_projects", JSON.stringify(projects));
+  const activeProfile = getActiveProfile();
+  localStorage.setItem(`portfolio_projects_${activeProfile}`, JSON.stringify(projects));
 }
 
 // Highlight the current page in navigation header

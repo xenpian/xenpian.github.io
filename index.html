@@ -31,8 +31,21 @@
         <div class="profile-dropdown-wrap">
           <img src="https://github.com/xenpian.png" alt="xenpian" class="profile-avatar" id="profile-avatar-btn">
           <div class="profile-dropdown" id="profile-dropdown-menu">
-            <a href="https://github.com/xenpian" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
-            <a href="projects"><i class="fa-solid fa-code"></i> Repositories</a>
+            <div class="dropdown-header">Profiles</div>
+            <div class="profile-switch-option" data-profile="xenpian">
+              <img src="https://github.com/xenpian.png" alt="xenpian">
+              <span>xenpian</span>
+            </div>
+            <div class="profile-switch-option" data-profile="weezy-os">
+              <img src="https://github.com/weezy-os.png" alt="weezy-os">
+              <span>weezy-os</span>
+            </div>
+            <div class="profile-switch-option" data-profile="uncoff">
+              <img src="https://github.com/uncoff.png" alt="uncoff">
+              <span>uncoff</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="https://github.com/xenpian" id="dropdown-github-link" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
           </div>
         </div>
         <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
@@ -70,7 +83,7 @@
     </section>
 
     <!-- Web Sitelerimiz Section -->
-    <section style="margin-top: 40px; margin-bottom: 32px;">
+    <section id="websites-section" style="margin-top: 40px; margin-bottom: 32px;">
       <div class="recent-projects-header">
         <h2 style="font-size: 16px; font-weight: 600;">Our Websites</h2>
       </div>
