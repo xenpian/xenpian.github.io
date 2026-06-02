@@ -26,6 +26,121 @@ const LANGUAGE_COLORS = {
   "Java": "#b07219"
 };
 
+const FALLBACK_SEEDS = {
+  "xenpian": [
+    {
+      id: "1",
+      title: "xenixa-browser",
+      shortDescription: "A lightweight, fast, and privacy-oriented modern web browser interface optimized for embedded systems and low-end devices.",
+      longDescription: "xenixa-browser is a web-based browser interface specially optimized for embedded systems and kiosk devices. It offers minimal memory usage and high rendering performance.",
+      language: "JavaScript",
+      languageColor: "#f1e05a",
+      tags: ["Browser", "WebEngine", "Embedded"],
+      githubUrl: "https://github.com/xenpian/xenixa-browser",
+      liveUrl: "",
+      stars: 3,
+      languages: [
+        { lang: "JavaScript", percent: 92.4 },
+        { lang: "HTML", percent: 5.1 },
+        { lang: "CSS", percent: 2.5 }
+      ],
+      features: [
+        "Low memory consumption and high rendering performance",
+        "Fullscreen support for embedded systems and kiosk devices",
+        "Modular and extensible tab/window management",
+        "Ad and tracker blocking infrastructure"
+      ]
+    },
+    {
+      id: "2",
+      title: "unia",
+      shortDescription: "A modern, unified design system and component library built with performance and customizability in mind.",
+      longDescription: "unia is a highly customizable component library and design system framework for building modern web applications with minimal footprint.",
+      language: "TypeScript",
+      languageColor: "#3178c6",
+      tags: ["DesignSystem", "Components", "Frontend"],
+      githubUrl: "https://github.com/xenpian/unia",
+      liveUrl: "",
+      stars: 1,
+      languages: [
+        { lang: "TypeScript", percent: 85.0 },
+        { lang: "CSS", percent: 12.0 },
+        { lang: "HTML", percent: 3.0 }
+      ],
+      features: [
+        "Fully customizable design tokens and theme support",
+        "Highly optimized performance and zero runtime overhead",
+        "Comprehensive suite of accessible web components"
+      ]
+    },
+    {
+      id: "3",
+      title: "xenpian.github.io",
+      shortDescription: "Personal portfolio website displaying open-source software solutions, system tools, and developer libraries.",
+      longDescription: "The official GitHub Pages repository for xenpian, serving as a responsive, interactive, and beautifully designed developer portfolio.",
+      language: "HTML",
+      languageColor: "#e34c26",
+      tags: ["Portfolio", "GitHubPages", "HTML5", "CSS3"],
+      githubUrl: "https://github.com/xenpian/xenpian.github.io",
+      liveUrl: "https://xenpian.github.io",
+      stars: 0,
+      languages: [
+        { lang: "HTML", percent: 45.0 },
+        { lang: "CSS", percent: 35.0 },
+        { lang: "JavaScript", percent: 20.0 }
+      ],
+      features: [
+        "Responsive vertical navbar capsule with drag-and-snap controls",
+        "Separated profile switcher and dynamic repository fetching",
+        "Clean, modern glassmorphism design system"
+      ]
+    },
+    {
+      id: "4",
+      title: "xenpian",
+      shortDescription: "Digital identity landing page and biography site project.",
+      longDescription: "xenpian is a minimal bio link and digital card page designed to showcase personal profile details in an elegant, unified layout.",
+      language: "HTML",
+      languageColor: "#e34c26",
+      tags: ["BioPage", "Profile", "HTML5"],
+      githubUrl: "https://github.com/xenpian/xenpian",
+      liveUrl: "",
+      stars: 0,
+      languages: [
+        { lang: "HTML", percent: 100.0 }
+      ],
+      features: [
+        "Lightweight structure with zero dependencies",
+        "Clean typography and responsive alignment",
+        "Aesthetic bio cards and social media redirection"
+      ]
+    }
+  ],
+  "weezy-os": [
+    {
+      id: "101",
+      title: "Waltuh",
+      shortDescription: "A collection of custom shell configuration utilities, system automation scripts, and development helpers.",
+      longDescription: "Waltuh provides a robust suite of dotfiles, bash/zsh automation scripts, and personal system configurations optimized for UNIX environments.",
+      language: "Shell",
+      languageColor: "#89e051",
+      tags: ["Dotfiles", "Shell", "Automation", "UNIX"],
+      githubUrl: "https://github.com/weezy-os/Waltuh",
+      liveUrl: "",
+      stars: 0,
+      languages: [
+        { lang: "Shell", percent: 100.0 }
+      ],
+      features: [
+        "Automated system setup and package configuration scripts",
+        "Optimized zsh/bash configurations and aliases",
+        "Modular helper scripts for file management and backups"
+      ]
+    }
+  ],
+  "uncoff": []
+};
+
 // Get active profile username
 function getActiveProfile() {
   return localStorage.getItem("active_profile") || "xenpian";
@@ -155,12 +270,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // Seed data from projects-data.js or cache if local storage is empty
 function initProjects() {
   const activeProfile = getActiveProfile();
-  const savedProjects = localStorage.getItem(`portfolio_projects_${activeProfile}`);
+  
+  // Try loading active profile cache
+  let savedProjects = localStorage.getItem(`portfolio_projects_${activeProfile}`);
+  
+  // Fallback to old cache key for xenpian if new cache is empty
+  if (!savedProjects && activeProfile === "xenpian") {
+    savedProjects = localStorage.getItem("my_portfolio_projects");
+    if (savedProjects) {
+      localStorage.setItem(`portfolio_projects_xenpian`, savedProjects);
+    }
+  }
+  
   if (savedProjects) {
     projects = JSON.parse(savedProjects);
     projects.sort((a, b) => (b.stars || 0) - (a.stars || 0));
-  } else if (activeProfile === "xenpian" && typeof INITIAL_PROJECTS !== "undefined") {
-    projects = [...INITIAL_PROJECTS];
+  } else if (FALLBACK_SEEDS[activeProfile]) {
+    projects = [...FALLBACK_SEEDS[activeProfile]];
   } else {
     projects = [];
   }
@@ -246,7 +372,11 @@ async function fetchGitHubProjects() {
     projects = mappedProjects.sort((a, b) => b.stars - a.stars);
     saveProjectsToStorage();
   } catch (error) {
-    console.error("Failed to fetch GitHub repos, using cache:", error);
+    console.error("Failed to fetch GitHub repos, using cache or seeds:", error);
+    // Fallback to local seeds if the cache/fetch fails and list is empty
+    if (projects.length === 0 && FALLBACK_SEEDS[activeProfile]) {
+      projects = [...FALLBACK_SEEDS[activeProfile]];
+    }
   }
 }
 
