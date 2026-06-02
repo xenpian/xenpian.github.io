@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xallways | Open Source Software Solutions</title>
+  <meta name="description" content="Open source software, system tools, and developer libraries developed by xallways.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo-wrap">
+        <a href="index.html" class="logo">
+          <i class="fa-brands fa-github-alt"></i> xallways
+        </a>
+      </div>
+
+      <nav id="nav-menu">
+        <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href="projects.html" class="nav-link"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
+        <a href="about.html" class="nav-link"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="profile-dropdown-wrap">
+          <img src="https://github.com/xenpian.png" alt="xenpian" class="profile-avatar" id="profile-avatar-btn">
+          <div class="profile-dropdown" id="profile-dropdown-menu">
+            <a href="https://github.com/xenpian" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
+            <a href="projects.html"><i class="fa-solid fa-code"></i> Repositories</a>
+          </div>
+        </div>
+        <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="container">
+
+    <!-- ASCII Art Area -->
+    <div class="ascii-art-container">
+      <div class="ascii-art-gif-wrap">
+        <img src="assets/logo.gif" alt="Logo" class="ascii-art-gif">
+      </div>
+      <div class="scroll-down-wrap">
+        <a href="#biz-kimiz" class="scroll-down-btn" aria-label="Scroll Down">
+          <i class="fa-solid fa-chevron-down"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Flat Hero Banner -->
+    <section id="biz-kimiz" class="home-hero" style="padding-top: 20px;">
+      <h1>Who we are and our open source projects.</h1>
+      <p>
+        xallways is an independent software initiative that develops fast, modular, and performance-oriented web
+        libraries and system tools for developers.
+      </p>
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <a href="projects.html" class="btn btn-primary">Explore Projects</a>
+      </div>
+    </section>
+
+    <!-- Web Sitelerimiz Section -->
+    <section style="margin-top: 40px; margin-bottom: 32px;">
+      <div class="recent-projects-header">
+        <h2 style="font-size: 16px; font-weight: 600;">Our Websites</h2>
+      </div>
+      <div class="repo-grid">
+
+        <!-- 42code.net Card -->
+        <div class="repo-card" style="padding: 0; overflow: hidden; height: 360px; cursor: pointer;"
+          onclick="window.open('https://42code.net', '_blank')">
+          <div class="webview-image-container"
+            style="height: 100%; overflow: hidden; background-color: var(--bg-main);">
+            <img src="assets/42code.png" alt="42code.net"
+              style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+          </div>
+        </div>
+
+        <!-- xenpian.com Card -->
+        <div class="repo-card" style="padding: 0; overflow: hidden; height: 360px; cursor: pointer;"
+          onclick="window.open('https://xenpian.com', '_blank')">
+          <div class="webview-image-container"
+            style="height: 100%; overflow: hidden; background-color: var(--bg-main);">
+            <img src="assets/xenpian.png" alt="xenpian.com"
+              style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Recent Projects Preview (GitHub Repo Style) -->
+    <section style="margin-top: 40px;">
+      <div class="recent-projects-header">
+        <h2 style="font-size: 16px; font-weight: 600;">Featured Projects</h2>
+        <a href="projects.html" style="font-size: 12px; color: #58a6ff;">View All</a>
+      </div>
+
+      <!-- Limit projects list to 2 for homepage preview -->
+      <div id="projects-grid" class="repo-grid" data-limit="2">
+        <!-- Loaded dynamically from app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Project Detail Modal -->
+  <div id="project-detail-modal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+      <div class="modal-title">
+        <i class="fa-solid fa-bookmark"></i> <span id="detail-title">Project Title</span>
+      </div>
+      <div id="detail-lang" class="modal-meta">
+        <!-- Language indicator -->
+      </div>
+      <p id="detail-desc" class="modal-desc">Project description.</p>
+
+      <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Features</h3>
+      <ul id="detail-features" class="modal-features">
+        <!-- Bullet points -->
+      </ul>
+
+      <div class="modal-actions">
+        <a id="detail-github" href="#" target="_blank" class="btn btn-secondary">
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+        <a id="detail-live" href="#" target="_blank" class="btn btn-primary">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Message saved.</div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-container">
+      <div>
+        &copy; 2026 xallways. All rights reserved.
+      </div>
+      <div class="social-links">
+        <a href="https://github.com" target="_blank" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://twitter.com" target="_blank" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="projects-data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>

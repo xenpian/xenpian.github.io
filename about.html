@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | xallways</title>
+  <meta name="description" content="Information about xallways software studio, focused technologies, and fields of activity.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo-wrap">
+        <a href="index.html" class="logo">
+          <i class="fa-brands fa-github-alt"></i> xallways
+        </a>
+      </div>
+      
+      <nav id="nav-menu">
+        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
+        <a href="projects.html" class="nav-link"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
+        <a href="about.html" class="nav-link active"><i class="fa-solid fa-user"></i> <span>About Us</span></a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="profile-dropdown-wrap">
+          <img src="https://github.com/xenpian.png" alt="xenpian" class="profile-avatar" id="profile-avatar-btn">
+          <div class="profile-dropdown" id="profile-dropdown-menu">
+            <a href="https://github.com/xenpian" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
+            <a href="projects.html"><i class="fa-solid fa-code"></i> Repositories</a>
+          </div>
+        </div>
+        <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <div class="page-header">
+      <h1 class="page-title">About Us</h1>
+      <p class="page-subtitle">Our focus areas, development processes, and goals.</p>
+    </div>
+
+    <!-- About Content Layout -->
+    <section class="about-grid">
+      <div>
+        <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-main);">Who We Are</h2>
+        <p class="bio-p">
+          xallways is an independent technology initiative that develops high-performance software and developer libraries, focusing on modern web standards and the open-source ecosystem.
+        </p>
+        <p class="bio-p">
+          Our main areas of activity include cloud-native control panels, lightweight web frameworks, Android AOSP-based system interfaces, and performance-oriented libraries. A significant portion of the developed software is published as open-source to contribute to the ecosystem.
+        </p>
+        
+        <h2 style="font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--text-main);">Our Technology Stack</h2>
+        <div class="skills-list">
+          <span class="skill-tag">JavaScript / TypeScript</span>
+          <span class="skill-tag">Node.js / Express</span>
+          <span class="skill-tag">React / Next.js</span>
+          <span class="skill-tag">Go (Golang)</span>
+          <span class="skill-tag">Java / Kotlin</span>
+          <span class="skill-tag">Docker & Kubernetes</span>
+          <span class="skill-tag">AOSP (Android Open Source Project)</span>
+          <span class="skill-tag">HTML5 / CSS3</span>
+          <span class="skill-tag">Git / GitHub Actions CI-CD</span>
+        </div>
+      </div>
+
+      <div>
+        <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--text-main);">Our Focus Areas</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-title">Open Source Developer Tools</div>
+            <div class="timeline-company">Zero-dependency modular JS/CSS frameworks and fast integration libraries.</div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-title">Cloud & Metrics Management</div>
+            <div class="timeline-company">Monitoring, reporting, and convenient visual control panels for Kubernetes and Docker infrastructures.</div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-title">Mobile & Embedded Systems</div>
+            <div class="timeline-company">Android AOSP-based embedded system interfaces and optimized launcher solutions.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast">Information saved.</div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-container">
+      <div>
+        &copy; 2026 xallways. All rights reserved.
+      </div>
+      <div class="social-links">
+        <a href="https://github.com" target="_blank" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://twitter.com" target="_blank" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="projects-data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
