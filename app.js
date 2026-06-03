@@ -138,7 +138,8 @@ const FALLBACK_SEEDS = {
       ]
     }
   ],
-  "uncoff": []
+  "uncoff": [],
+  "Ters-Nokta": []
 };
 
 // Get active profile username
@@ -189,6 +190,8 @@ function updateProfileUI() {
       logoImg.src = "assets/weezylogo.gif";
     } else if (activeProfile === "uncoff") {
       logoImg.src = "assets/uncoff.gif";
+    } else if (activeProfile === "Ters-Nokta") {
+      logoImg.src = "assets/tersnokta.gif";
     } else {
       logoImg.src = "assets/logo.gif";
     }
