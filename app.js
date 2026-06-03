@@ -150,14 +150,14 @@ function getActiveProfile() {
 // Update UI elements based on active profile
 function updateProfileUI() {
   const activeProfile = getActiveProfile();
-  
+
   // Update navbar avatar
   const profileAvatarBtn = document.getElementById("profile-avatar-btn");
   if (profileAvatarBtn) {
     profileAvatarBtn.src = `https://github.com/${activeProfile}.png`;
     profileAvatarBtn.alt = activeProfile;
   }
-  
+
   // Update dropdown options active state
   document.querySelectorAll(".profile-switch-option").forEach(option => {
     if (option.dataset.profile === activeProfile) {
@@ -166,13 +166,13 @@ function updateProfileUI() {
       option.classList.remove("active");
     }
   });
-  
+
   // Update GitHub link in dropdown
   const githubLink = document.getElementById("dropdown-github-link");
   if (githubLink) {
     githubLink.href = `https://github.com/${activeProfile}`;
   }
-  
+
   // Toggle websites section on homepage
   const websitesSection = document.getElementById("websites-section");
   if (websitesSection) {
@@ -182,7 +182,7 @@ function updateProfileUI() {
       websitesSection.style.display = "none";
     }
   }
-  
+
   // Update home page logo gif
   const logoImg = document.querySelector(".ascii-art-gif");
   if (logoImg) {
@@ -202,31 +202,31 @@ function updateProfileUI() {
 function setupProfileSwitcher() {
   // Initialize UI immediately
   updateProfileUI();
-  
+
   document.querySelectorAll(".profile-switch-option").forEach(option => {
     option.addEventListener("click", async (e) => {
       e.stopPropagation();
       const selectedProfile = option.dataset.profile;
       const currentProfile = getActiveProfile();
-      
+
       if (selectedProfile === currentProfile) return;
-      
+
       localStorage.setItem("active_profile", selectedProfile);
       updateProfileUI();
-      
+
       // Close dropdown
       const profileDropdownMenu = document.getElementById("profile-dropdown-menu");
       if (profileDropdownMenu) {
         profileDropdownMenu.classList.remove("active");
       }
-      
+
       // Re-initialize projects with cache & fetch new ones
       initProjects();
       if (projectsGrid) {
         renderFilters();
         renderProjects();
       }
-      
+
       // Fetch fresh repos
       await fetchGitHubProjects();
       if (projectsGrid) {
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("my_portfolio_projects");
     localStorage.setItem("portfolio_cache_v3", "true");
   }
-  
+
   setupProfileSwitcher(); // Initialize profile switcher
   initProjects();
   initActiveNavLink();
@@ -253,14 +253,14 @@ document.addEventListener("DOMContentLoaded", () => {
   setupScrollListener();
   initSkullAnimation();
   setupDragListener();
-  
+
   // Initialize Projects Grid if on Projects Page (or homepage preview)
   if (projectsGrid) {
     renderFilters();
     renderProjects();
     setupProjectsPageListeners();
   }
-  
+
   // Fetch updated repositories from GitHub in the background
   fetchGitHubProjects().then(() => {
     if (projectsGrid) {
@@ -273,10 +273,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // Seed data from projects-data.js or cache if local storage is empty
 function initProjects() {
   const activeProfile = getActiveProfile();
-  
+
   // Try loading active profile cache
   let savedProjects = localStorage.getItem(`portfolio_projects_${activeProfile}`);
-  
+
   // Fallback to old cache key for xenpian if new cache is empty
   if (!savedProjects && activeProfile === "xenpian") {
     savedProjects = localStorage.getItem("my_portfolio_projects");
@@ -284,7 +284,7 @@ function initProjects() {
       localStorage.setItem(`portfolio_projects_xenpian`, savedProjects);
     }
   }
-  
+
   if (savedProjects) {
     projects = JSON.parse(savedProjects);
     projects.sort((a, b) => (b.stars || 0) - (a.stars || 0));
@@ -301,7 +301,7 @@ async function fetchGitHubProjects() {
     const response = await fetch(`https://api.github.com/users/${activeProfile}/repos?sort=updated`);
     if (!response.ok) throw new Error("GitHub API error");
     const repos = await response.json();
-    
+
     // Read the current cache from localStorage if it exists
     let cachedProjects = [];
     const saved = localStorage.getItem(`portfolio_projects_${activeProfile}`);
@@ -356,7 +356,7 @@ async function fetchGitHubProjects() {
                 return { lang, percent: parseFloat(percent) };
               })
               .sort((a, b) => b.percent - a.percent);
-            
+
             // Show languages with at least 0.1% usage (i.e. percent > 0 after rounding), always keeping at least the main one
             const filteredLangs = langs.filter(l => l.percent > 0);
             project.languages = filteredLangs.length > 0 ? filteredLangs : langs.slice(0, 1);
@@ -392,12 +392,12 @@ function saveProjectsToStorage() {
 function initActiveNavLink() {
   const path = window.location.pathname;
   const page = path.substring(path.lastIndexOf("/") + 1);
-  
+
   document.querySelectorAll(".nav-link").forEach(link => {
     link.classList.remove("active");
     const href = link.getAttribute("href");
     if (
-      page === href || 
+      page === href ||
       (href === "./" && (page === "" || page === "index.php" || page === "index.html"))
     ) {
       link.classList.add("active");
@@ -409,13 +409,13 @@ function initActiveNavLink() {
 function setupProfileDropdownListener() {
   const profileAvatarBtn = document.getElementById("profile-avatar-btn");
   const profileDropdownMenu = document.getElementById("profile-dropdown-menu");
-  
+
   if (profileAvatarBtn && profileDropdownMenu) {
     profileAvatarBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       profileDropdownMenu.classList.toggle("active");
     });
-    
+
     document.addEventListener("click", () => {
       profileDropdownMenu.classList.remove("active");
     });
@@ -445,16 +445,16 @@ function setupProjectsPageListeners() {
 // Render dynamic tag filters on projects page
 function renderFilters() {
   if (!filterTabsContainer) return;
-  
+
   const allTags = new Set();
   projects.forEach(project => {
     if (project.tags && Array.isArray(project.tags)) {
       project.tags.forEach(tag => allTags.add(tag));
     }
   });
-  
+
   const tagsList = ["All", ...Array.from(allTags)];
-  
+
   filterTabsContainer.innerHTML = "";
   tagsList.forEach(tag => {
     const tab = document.createElement("button");
@@ -473,22 +473,22 @@ function renderFilters() {
 // Render projects on grid
 function renderProjects() {
   if (!projectsGrid) return;
-  
+
   projectsGrid.innerHTML = "";
-  
+
   // Filter logic
   let filtered = projects;
-  
+
   // Check if page limits projects (e.g. index.html should only show top 2 projects)
   const isHomepageLimit = projectsGrid.dataset.limit !== undefined;
-  
+
   if (!isHomepageLimit) {
     filtered = projects.filter(project => {
       const matchesTag = activeFilter === "All" || (project.tags && project.tags.includes(activeFilter));
-      const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            project.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (project.language && project.language.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                            project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (project.language && project.language.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesTag && matchesSearch;
     });
   } else {
@@ -496,7 +496,7 @@ function renderProjects() {
     const limit = parseInt(projectsGrid.dataset.limit);
     filtered = projects.slice(0, limit);
   }
-  
+
   if (filtered.length === 0) {
     projectsGrid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 40px 16px; color: var(--text-muted);">
@@ -505,16 +505,16 @@ function renderProjects() {
     `;
     return;
   }
-  
+
   filtered.forEach(project => {
     const card = document.createElement("div");
     card.className = "repo-card";
-    
+
     // Clicking title or body opens details
     card.addEventListener("click", () => {
       openProjectDetail(project.id);
     });
-    
+
     let tagsHTML = "";
     if (project.languages && project.languages.length > 0) {
       tagsHTML = project.languages.map(langObj => {
@@ -538,7 +538,7 @@ function renderProjects() {
         <span>${project.language}</span>
       </div>
     ` : "";
-    
+
     card.innerHTML = `
       <div>
         <div class="repo-header">
@@ -556,26 +556,26 @@ function renderProjects() {
         </div>
       </div>
     `;
-    
+
     projectsGrid.appendChild(card);
   });
 }
 
 // Project Details Modal view
-window.openProjectDetail = function(projectId) {
+window.openProjectDetail = function (projectId) {
   const project = projects.find(p => p.id === projectId);
   if (!project) return;
-  
+
   const detailTitle = document.getElementById("detail-title");
   const detailDesc = document.getElementById("detail-desc");
   const detailFeatures = document.getElementById("detail-features");
   const detailGithub = document.getElementById("detail-github");
   const detailLive = document.getElementById("detail-live");
   const detailLang = document.getElementById("detail-lang");
-  
+
   if (detailTitle) detailTitle.textContent = project.title;
   if (detailDesc) detailDesc.textContent = project.longDescription || project.shortDescription;
-  
+
   if (detailLang && project.language) {
     detailLang.innerHTML = `
       <span class="lang-dot" style="background-color: ${project.languageColor || '#8b949e'}"></span>
@@ -584,20 +584,20 @@ window.openProjectDetail = function(projectId) {
   } else if (detailLang) {
     detailLang.innerHTML = "";
   }
-  
+
   if (detailFeatures) {
     detailFeatures.innerHTML = "";
-    const listItems = project.features && project.features.length > 0 
-      ? project.features 
+    const listItems = project.features && project.features.length > 0
+      ? project.features
       : ["Clean code structure and performance optimization", "Responsive, modern layout design"];
-      
+
     listItems.forEach(feat => {
       const li = document.createElement("li");
       li.textContent = feat;
       detailFeatures.appendChild(li);
     });
   }
-  
+
   if (detailGithub) {
     if (project.githubUrl) {
       detailGithub.href = project.githubUrl;
@@ -606,7 +606,7 @@ window.openProjectDetail = function(projectId) {
       detailGithub.style.display = "none";
     }
   }
-  
+
   if (detailLive) {
     if (project.liveUrl) {
       detailLive.href = project.liveUrl;
@@ -615,13 +615,13 @@ window.openProjectDetail = function(projectId) {
       detailLive.style.display = "none";
     }
   }
-  
+
   if (projectDetailModal) {
     projectDetailModal.classList.add("active");
   }
 };
 
-window.closeDetailModal = function() {
+window.closeDetailModal = function () {
   if (projectDetailModal) {
     projectDetailModal.classList.remove("active");
   }
@@ -638,7 +638,7 @@ window.addEventListener("click", (e) => {
 function setupMobileMenuListener() {
   const menuToggleBtn = document.getElementById("menu-toggle-btn");
   const navMenu = document.getElementById("nav-menu");
-  
+
   if (menuToggleBtn && navMenu) {
     menuToggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -650,7 +650,7 @@ function setupMobileMenuListener() {
         icon.className = "fa-solid fa-bars";
       }
     });
-    
+
     // Close menu when clicking outside
     document.addEventListener("click", (e) => {
       if (!navMenu.contains(e.target) && e.target !== menuToggleBtn) {
@@ -676,13 +676,13 @@ function setupScrollListener() {
       document.body.classList.remove("scrolled");
     }
   };
-  
+
   window.addEventListener("scroll", handleScroll);
   handleScroll(); // Call immediately on load
 }
 
 // initSkullAnimation is now handled natively via hardware-accelerated GIF for 0% CPU usage
-function initSkullAnimation() {}
+function initSkullAnimation() { }
 
 // Pointer events dragging and viewport-snapping for scrolled capsule header
 function setupDragListener() {
@@ -698,25 +698,25 @@ function setupDragListener() {
   header.addEventListener("pointerdown", (e) => {
     // Only allow dragging in scrolled capsule state
     if (!document.body.classList.contains("scrolled")) return;
-    
+
     // Do not drag if clicking active components or dropdowns
     if (e.target.closest("a, button, input, img, .profile-dropdown")) return;
 
     isDragging = true;
     header.setPointerCapture(e.pointerId);
-    
+
     const rect = header.getBoundingClientRect();
-    
+
     startX = e.clientX;
     startY = e.clientY;
-    
+
     // Calculate initial center coordinates
     initialLeft = rect.left + rect.width / 2;
     initialTop = rect.top + rect.height / 2;
 
     header.style.transition = "none"; // Disable animation during active dragging
     header.style.cursor = "grabbing";
-    
+
     e.preventDefault();
   });
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <!-- Navigation Header -->
@@ -18,7 +20,7 @@
           <i class="fa-brands fa-github-alt"></i> xallways
         </a>
       </div>
-      
+
       <nav id="nav-menu">
         <a href="./" class="nav-link"><i class="fa-solid fa-house"></i> <span>Home</span></a>
         <a href="projects" class="nav-link active"><i class="fa-solid fa-code"></i> <span>Projects</span></a>
@@ -47,7 +49,8 @@
               <span>Ters-Nokta</span>
             </div>
             <div class="dropdown-divider"></div>
-            <a href="https://github.com/xenpian" id="dropdown-github-link" target="_blank"><i class="fa-brands fa-github"></i> GitHub Profile</a>
+            <a href="https://github.com/xenpian" id="dropdown-github-link" target="_blank"><i
+                class="fa-brands fa-github"></i> GitHub Profile</a>
           </div>
         </div>
         <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
@@ -59,7 +62,7 @@
 
   <!-- Main Content -->
   <main class="container">
-    
+
     <div class="page-header">
       <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
         <div>
@@ -75,7 +78,7 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" id="search-input" class="search-input" placeholder="Search project name, tag or language...">
       </div>
-      
+
       <div id="filter-tabs" class="tag-filters">
         <!-- Dynamically generated tags -->
       </div>
@@ -99,12 +102,12 @@
         <!-- Language info -->
       </div>
       <p id="detail-desc" class="modal-desc">Project description.</p>
-      
+
       <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Features</h3>
       <ul id="detail-features" class="modal-features">
         <!-- List points -->
       </ul>
-      
+
       <div class="modal-actions">
         <a id="detail-github" href="#" target="_blank" class="btn btn-secondary">
           <i class="fa-brands fa-github"></i> View on GitHub
@@ -137,4 +140,5 @@
   <script src="app.js"></script>
 
 </body>
+
 </html>
