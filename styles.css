@@ -683,10 +683,85 @@ body.scrolled .nav-link i {
   display: inline-block;
 }
 
+.repo-tags-container {
+  width: 100%;
+  position: relative;
+}
+
+.repo-tags-content {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
 .repo-tags {
   display: flex;
   gap: 4px;
   flex-wrap: wrap;
+}
+
+.repo-tags-container.has-collapse.collapsed .repo-tags {
+  max-height: 52px;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.repo-tags-container.has-collapse.expanded .repo-tags {
+  max-height: 800px;
+  overflow: visible;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.repo-tags-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(16, 16, 16, 0) 0%, rgba(16, 16, 16, 0.75) 50%, var(--bg-main, #101010) 100%);
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+  z-index: 2;
+}
+
+.repo-tags-container.expanded .repo-tags-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.repo-tags-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px auto 0 auto;
+  width: 28px;
+  height: 20px;
+  background-color: var(--bg-btn, #222222);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 10px;
+  transition: var(--transition);
+  position: relative;
+  z-index: 3;
+}
+
+.repo-tags-toggle:hover {
+  background-color: var(--bg-btn-hover, #2d2d2d);
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(1px);
+}
+
+.repo-tags-toggle i {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.repo-tags-container.expanded .repo-tags-toggle i {
+  transform: rotate(180deg);
 }
 
 .repo-tag {

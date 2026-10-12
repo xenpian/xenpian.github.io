@@ -515,9 +515,9 @@ function renderProjects() {
       openProjectDetail(project.id);
     });
 
-    let tagsHTML = "";
+    let tagsList = [];
     if (project.languages && project.languages.length > 0) {
-      tagsHTML = project.languages.map(langObj => {
+      tagsList = project.languages.map(langObj => {
         const color = LANGUAGE_COLORS[langObj.lang] || "#8b949e";
         let styleStr = `background-color: rgba(139, 148, 158, 0.15); color: ${color}; border: 1px solid rgba(139, 148, 158, 0.3);`;
         if (color.startsWith("#") && color.length === 7) {
@@ -527,10 +527,35 @@ function renderProjects() {
           styleStr = `background-color: rgba(${r}, ${g}, ${b}, 0.12); color: ${color}; border: 1px solid rgba(${r}, ${g}, ${b}, 0.25);`;
         }
         return `<span class="repo-tag" style="${styleStr}">${langObj.lang} ${langObj.percent}%</span>`;
-      }).join("");
-    } else {
-      tagsHTML = project.tags.map(tag => `<span class="repo-tag">${tag}</span>`).join("");
+      });
+    } else if (project.tags && project.tags.length > 0) {
+      tagsList = project.tags.map(tag => `<span class="repo-tag">${tag}</span>`);
     }
+
+    const tagsHTML = tagsList.join("");
+    const isCollapsible = tagsList.length > 6;
+
+    const tagsContainerHTML = isCollapsible ? `
+      <div class="repo-tags-container has-collapse collapsed">
+        <div class="repo-tags-content">
+          <div class="repo-tags">
+            ${tagsHTML}
+          </div>
+          <div class="repo-tags-fade"></div>
+        </div>
+        <button type="button" class="repo-tags-toggle" title="Daha fazla etiket göster" aria-label="Etiketleri genişlet veya daralt">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+    ` : `
+      <div class="repo-tags-container">
+        <div class="repo-tags-content">
+          <div class="repo-tags">
+            ${tagsHTML}
+          </div>
+        </div>
+      </div>
+    `;
 
     const langHTML = project.language ? `
       <div class="repo-lang">
@@ -551,11 +576,32 @@ function renderProjects() {
       </div>
       <div class="repo-footer">
         ${langHTML}
-        <div class="repo-tags">
-          ${tagsHTML}
-        </div>
+        ${tagsContainerHTML}
       </div>
     `;
+
+    if (isCollapsible) {
+      const toggleBtn = card.querySelector(".repo-tags-toggle");
+      const container = card.querySelector(".repo-tags-container");
+      const fadeEl = card.querySelector(".repo-tags-fade");
+
+      const toggleAction = (e) => {
+        e.stopPropagation();
+        const isCollapsed = container.classList.toggle("collapsed");
+        container.classList.toggle("expanded", !isCollapsed);
+        if (toggleBtn) {
+          toggleBtn.title = isCollapsed ? "Daha fazla etiket göster" : "Daha az göster";
+          toggleBtn.setAttribute("aria-expanded", !isCollapsed);
+        }
+      };
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", toggleAction);
+      }
+      if (fadeEl) {
+        fadeEl.addEventListener("click", toggleAction);
+      }
+    }
 
     projectsGrid.appendChild(card);
   });
