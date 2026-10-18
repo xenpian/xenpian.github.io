@@ -252,7 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMobileMenuListener();
   setupScrollListener();
   initSkullAnimation();
-  setupDragListener();
 
   // Initialize Projects Grid if on Projects Page (or homepage preview)
   if (projectsGrid) {
@@ -758,158 +757,24 @@ function setupMobileMenuListener() {
   }
 }
 
-// Scrolled state detection for vertical navbar capsule
+// Scrolled state detection for sticky logo & profile
 function setupScrollListener() {
-  const header = document.querySelector("header");
   const handleScroll = () => {
-    if (window.scrollY > 60) {
+    if (window.scrollY > 30) {
       document.body.classList.add("scrolled");
-      // Add default snap-right if no snap class exists
-      if (header && !header.classList.contains("snap-left") && !header.classList.contains("snap-right") && !header.classList.contains("snap-top") && !header.classList.contains("snap-bottom")) {
-        header.classList.add("snap-right");
-      }
     } else {
       document.body.classList.remove("scrolled");
     }
   };
 
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll(); // Call immediately on load
 }
 
 // initSkullAnimation is now handled natively via hardware-accelerated GIF for 0% CPU usage
 function initSkullAnimation() { }
 
-// Pointer events dragging and viewport-snapping for scrolled capsule header
-function setupDragListener() {
-  const header = document.querySelector("header");
-  if (!header) return;
-
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let initialLeft = 0;
-  let initialTop = 0;
-
-  header.addEventListener("pointerdown", (e) => {
-    // Only allow dragging in scrolled capsule state
-    if (!document.body.classList.contains("scrolled")) return;
-
-    // Do not drag if clicking active components or dropdowns
-    if (e.target.closest("a, button, input, img, .profile-dropdown")) return;
-
-    isDragging = true;
-    header.setPointerCapture(e.pointerId);
-
-    const rect = header.getBoundingClientRect();
-
-    startX = e.clientX;
-    startY = e.clientY;
-
-    // Calculate initial center coordinates
-    initialLeft = rect.left + rect.width / 2;
-    initialTop = rect.top + rect.height / 2;
-
-    header.style.transition = "none"; // Disable animation during active dragging
-    header.style.cursor = "grabbing";
-
-    e.preventDefault();
-  });
-
-  header.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    const newX = initialLeft + dx;
-    const newY = initialTop + dy;
-
-    // Center header under mouse
-    header.style.left = `${newX}px`;
-    header.style.top = `${newY}px`;
-    header.style.bottom = "auto";
-    header.style.right = "auto";
-    header.style.transform = "translate(-50%, -50%)";
-
-    // Dynamic snapping preview in real-time
-    const x = e.clientX;
-    const y = e.clientY;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    const distLeft = x;
-    const distRight = w - x;
-    const distTop = y;
-    const distBottom = h - y;
-
-    const minDist = Math.min(distLeft, distRight, distTop, distBottom);
-
-    let currentSnap = "";
-    if (minDist === distLeft) currentSnap = "snap-left";
-    else if (minDist === distRight) currentSnap = "snap-right";
-    else if (minDist === distTop) currentSnap = "snap-top";
-    else currentSnap = "snap-bottom";
-
-    if (!header.classList.contains(currentSnap)) {
-      header.classList.remove("snap-left", "snap-right", "snap-top", "snap-bottom");
-      header.classList.add(currentSnap);
-    }
-  });
-
-  header.addEventListener("pointerup", (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    header.releasePointerCapture(e.pointerId);
-
-    header.style.cursor = "";
-    header.style.transition = ""; // Restore animations
-
-    const x = e.clientX;
-    const y = e.clientY;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    // Distance to viewport edges
-    const distLeft = x;
-    const distRight = w - x;
-    const distTop = y;
-    const distBottom = h - y;
-
-    const minDist = Math.min(distLeft, distRight, distTop, distBottom);
-
-    header.classList.remove("snap-left", "snap-right", "snap-top", "snap-bottom");
-
-    // Clear inline positions to let CSS handle layout
-    header.style.left = "";
-    header.style.top = "";
-    header.style.bottom = "";
-    header.style.right = "";
-    header.style.transform = "";
-
-    // Snap to the closest viewport edge
-    if (minDist === distLeft) {
-      header.classList.add("snap-left");
-    } else if (minDist === distRight) {
-      header.classList.add("snap-right");
-    } else if (minDist === distTop) {
-      header.classList.add("snap-top");
-    } else {
-      header.classList.add("snap-bottom");
-    }
-  });
-
-  header.addEventListener("pointercancel", () => {
-    if (!isDragging) return;
-    isDragging = false;
-    header.style.cursor = "";
-    header.style.transition = "";
-    header.style.left = "";
-    header.style.top = "";
-    header.style.bottom = "";
-    header.style.right = "";
-    header.style.transform = "";
-  });
-}
+// Drag listener removed per user request
+function setupDragListener() { }
 
 
