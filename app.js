@@ -261,12 +261,16 @@ document.addEventListener("DOMContentLoaded", () => {
     setupProjectsPageListeners();
   }
 
+  // Check any static cards on initial load
+  applyAllRepoCardBackgrounds();
+
   // Fetch updated repositories from GitHub in the background
   fetchGitHubProjects().then(() => {
     if (projectsGrid) {
       renderFilters();
       renderProjects();
     }
+    applyAllRepoCardBackgrounds();
   });
 });
 
@@ -604,6 +608,52 @@ function renderProjects() {
     }
 
     projectsGrid.appendChild(card);
+    applyRepoCardBackground(card, project.title);
+  });
+}
+
+// Dynamically check and apply background image from assets/repo-cards/${repo-title}.png
+function applyRepoCardBackground(card, title) {
+  if (!card) return;
+  const rawTitle = (title || (card.querySelector(".repo-title") ? card.querySelector(".repo-title").textContent : "")).trim();
+  if (!rawTitle) return;
+
+  const candidateNames = [rawTitle];
+  if (rawTitle.toLowerCase() !== rawTitle) {
+    candidateNames.push(rawTitle.toLowerCase());
+  }
+
+  const tryLoad = (idx) => {
+    if (idx >= candidateNames.length) return;
+    const name = candidateNames[idx];
+    const imgUrl = `assets/repo-cards/${encodeURIComponent(name)}.png`;
+    const img = new Image();
+    img.onload = () => {
+      if (card.querySelector(".repo-card-bg")) return;
+      const bg = document.createElement("div");
+      bg.className = "repo-card-bg";
+      bg.style.backgroundImage = `url("${imgUrl}")`;
+      card.classList.add("has-repo-bg");
+      card.insertBefore(bg, card.firstChild);
+    };
+    img.onerror = () => {
+      tryLoad(idx + 1);
+    };
+    img.src = imgUrl;
+  };
+
+  tryLoad(0);
+}
+
+// Check all existing .repo-card elements on page (useful for static HTML cards)
+function applyAllRepoCardBackgrounds() {
+  document.querySelectorAll(".repo-card").forEach(card => {
+    if (card.querySelector(".webview-image-container")) return;
+    if (card.querySelector(".repo-card-bg")) return;
+    const titleEl = card.querySelector(".repo-title");
+    if (titleEl) {
+      applyRepoCardBackground(card, titleEl.textContent);
+    }
   });
 }
 

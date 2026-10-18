@@ -608,18 +608,64 @@ body.scrolled .nav-link i {
 }
 
 .repo-card {
-  border-radius: var(--border-radius);
+  border-radius: 14px;
   padding: 16px;
   display: flex;
+  height: 250px;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  overflow: hidden;
   transition: var(--transition);
 }
 
 .repo-card:hover {
   border-color: var(--border-hover);
 }
+
+/* Card content stays above background layers */
+.repo-card>*:not(.repo-card-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Repo card image background: Right side shows image, left side is normal color with smooth transparent fade */
+.repo-card-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 38%;
+  z-index: 1;
+  pointer-events: none;
+  background-position: right center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  opacity: 0.85;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.95) 75%, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.4) 48%, rgba(0, 0, 0, 0.95) 75%, black 100%);
+}
+
+.repo-card.has-repo-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(to right, #101010 0%, #101010 25%, #10101000 55%, #00000000 85%);
+  transition: opacity 0.35s ease;
+}
+
+.repo-card:hover .repo-card-bg {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+
 
 .repo-header {
   display: flex;
